@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Twitter</string>
+    <string name="login_label">Connect to Twitter</string>
+    <string name="title_activity_timeline">\t pjaytumkur @HK</string>
+    <string name="settings">settings</string>
+    <string name="bobs_tweet">BoBs Tweet</string>
+    <string name="bob">Bob</string>
+    <string name="real_name">Real Name</string>
+    <string name="relTiimeStamp">1h</string>
+    <string name="tweet">Tweet</string>
+    <string name="ok">OK</string>
+    <string name="twt">Tweet</string>
+    <string name="_140">140</string>
+    <string name="hkan">pjaytumkur</string>
+    <string name="hk">\@HK</string>
+    <string name="tweet_to">Tweet To:</string>
+    <string name="tweet_success">Tweet posted successfully</string>
+    <string name="Hint_message">Type your message here. No more than 140 chars. Note the counter below turn red if you exceed 140 chars</string>
+    <string name="Likes">1</string>
+    <string name="Retweets">5</string>
+    <string name="tvRetweet">NumRetweets</string>
+    <string name="tvLike">Like</string>
+
+</resources>

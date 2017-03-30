@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="false"
+    android:layout_centerInParent="false"
+    android:layout_centerVertical="false"
+    android:background="@android:drawable/picture_frame"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
+
+    <Button
+        android:id="@+id/btCancel"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_gravity="top|left"
+        android:background="@android:drawable/ic_delete"
+        tools:ignore="RtlHardcoded,UnusedAttribute" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/mytwitimage"
+        android:contentDescription=""
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:id="@+id/btnTweet"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="false"
+        android:elevation="1dp"
+        android:text="@string/twt"
+        android:textSize="24sp"
+        android:onClick="onButtonPressed"
+        tools:ignore="RelativeOverlap,RtlHardcoded,UnusedAttribute" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etTweetWC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/etTweet"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_above="@+id/btnTweet"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:hint="@string/Hint_message"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvMyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView"
+        android:text="@string/hkan"
+        android:textSize="18sp"
+        tools:ignore="RelativeOverlap" />
+
+    <TextView
+        android:id="@+id/tvMyHandle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvMyName"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView"
+        android:text="@string/hk"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etTweetTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/tweet_to"
+        android:inputType="text"
+        android:textSize="18sp"
+        android:layout_above="@+id/btnTweet"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
