@@ -2,6 +2,7 @@ package com.codepath.apps.tweeter.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        Log.d("DEBUG","Got item count as "+this.tweets.size());
         return this.tweets.size();
     }
 
@@ -58,7 +60,7 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-
+        Log.d("DEBUG","Got viewType: "+viewType);
         switch (viewType) {
             case NORMAL:
                 View textOnly = inflater.inflate(R.layout.simple_tweet_view,viewGroup, false);
@@ -69,15 +71,17 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 viewHolder = new PhotoTweetViews(mContext, FullView, tweets);
                 break;
             default:
-                FullView = inflater.inflate(R.layout.grid_view_video_tweet,viewGroup, false);
+                FullView = inflater.inflate(R.layout.photo_tweet_view,viewGroup,false); //grid_view_video_tweet,viewGroup, false);
                 viewHolder = new PhotoTweetViews(mContext, FullView, tweets);
                 break;
         }
+        Log.d("DEBUG","Connecting to viewholder: "+viewHolder.toString());
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        Log.d("DEBUG","Binding to view "+viewHolder.toString()+" At pos "+position);
         switch (viewHolder.getItemViewType()) {
             case NORMAL:
                 SimpleTweetViews twHolder = (SimpleTweetViews) viewHolder;
@@ -92,7 +96,7 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 configureSimpleTweetViews(twHolder, position);
                 break;
         }
-
+        Log.d("DEBUG","DONE Binding to view "+viewHolder.toString()+" At pos "+position);
 
     }
 

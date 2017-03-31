@@ -5,10 +5,12 @@ package com.codepath.apps.tweeter.activities;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,22 +19,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.fragments.ComposeTweetFragment;
+import com.codepath.apps.tweeter.fragments.HomeTimeLineFragment;
+import com.codepath.apps.tweeter.fragments.MentionsTimeLineFragment;
 import com.codepath.apps.tweeter.fragments.TweetsListFragment;
-import com.codepath.apps.tweeter.models.Tweet;
-import com.codepath.apps.tweeter.network.TwitterClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONArray;
 
 import butterknife.ButterKnife;
-import cz.msebera.android.httpclient.Header;
 //endregion
 
 public class TimelineActivity extends AppCompatActivity {
 
-    private TwitterClient client;
+
     private TweetsListFragment fragmentTweetsList;
     private static Toast toast;
 
@@ -53,57 +52,15 @@ public class TimelineActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.tw_icon_white);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        //region Floating Action buttom code
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setSize(FloatingActionButton.SIZE_MINI);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showEditDialog();
-//            }
-//        });
-        //endregion
-
-        client = com.codepath.apps.tweeter.activities.TwitterApplication.getRestClient();
-        //if(com.codepath.apps.tweeter.network.checknetwork.HaveCloud()) {
-        populateTimeline(1);
-        //}
-        if(savedInstanceState == null) {
-            fragmentTweetsList =  (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
-            Log.d("DEBUG","Executed the fragment list access");
-        }
+        // Get the viewpager
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        // Set the viewpager adapter for the pager
+        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        // find the sliding tabstrip
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        // Attach the tabstrip to the viewpager
+        tabStrip.setViewPager(vpPager);
     }
-
-    // Send API request to get the timeline json
-    // Fill the list view by creating the tweet objects from json
-    private void populateTimeline(long uId) {
-        client.setId(uId);
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
-            // Successful
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                //super.onSuccess(statusCode, headers, response);
-                //Log.d("DEBUG",json.toString()); // Got JSON here
-                // Deserialize
-                // Create models and add to adapter here
-                //Load models into listview
-                //tweets.addAll(Tweet.fromJSONArray(json));
-                //Log.d("DEBUG","Tw:"+tweets.toString());
-                //aTweets.notifyDataSetChanged();
-                fragmentTweetsList.addAll(Tweet.fromJSONArray(json));
-                fragmentTweetsList.refreshView();
-            }
-            // failure
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                //super.onFailure(statusCode, headers, throwable, errorResponse);
-                String JsonErrorMessage = "Json message corrupted";
-                Log.d("DEBUG", JsonErrorMessage);
-                showToast(getBaseContext(), JsonErrorMessage);
-            }
-        });
-    }
-
 
     public static void showToast(Context context, String message) {
         if (toast != null) { // prevent multi-toasts
@@ -155,5 +112,36 @@ public class TimelineActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public class TweetsPagerAdapter extends FragmentPagerAdapter {
+        final int PAGE_COUNT = 2;
+        private String tabTitles[] = { "Home", "Mentions"};
+        // Adapter gets the manager insert or remove from the activity
+        public TweetsPagerAdapter (FragmentManager fm) {
+            super(fm);
+        }
+
+        // Controls the creation and order of the fragments withing the pager
+        @Override
+        public Fragment getItem(int position) {
+            if(position == 0) {
+                return new HomeTimeLineFragment();
+            } else if (position == 1){
+                return new MentionsTimeLineFragment();
+            } else {
+                return null;
+            }
+        }
+
+        // Will return the Tab title
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+        // returns how many tabs there are
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
+    }
 
 }
