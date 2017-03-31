@@ -22,5 +22,11 @@
     <string name="Retweets">5</string>
     <string name="tvRetweet">NumRetweets</string>
     <string name="tvLike">Like</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="name">Name</string>
+    <string name="tag_line">Tag Line</string>
+    <string name="_5_followers">5 Followers</string>
+    <string name="_5_following">5 Following</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

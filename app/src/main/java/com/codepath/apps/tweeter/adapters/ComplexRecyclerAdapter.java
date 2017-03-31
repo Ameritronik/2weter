@@ -19,8 +19,8 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private final int PHOTO = 2; // This tweet has a picture
     private final int VIDEO   = 1; // has video
     private final int NORMAL  = 0; // Normal tweet no pic or vid
-    private static ArrayList<Tweet> tweets;
-    private static Context mContext;
+    private ArrayList<Tweet> tweets;
+    private Context mContext;
 
     // construct
     public ComplexRecyclerAdapter(Context context, ArrayList<Tweet> tweets) {
@@ -28,7 +28,7 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mContext = context;
     }
 
-    public static void addTweet(Tweet t) {
+    public void addTweet(Tweet t) {
         tweets.add(0,t);
     }
     // Return the size of your dataset (invoked by the layout manager)

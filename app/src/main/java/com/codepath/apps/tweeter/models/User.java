@@ -14,6 +14,9 @@ public class User {
     private String screenName;
     private String profileImageUrl;
     private String profile_image_url_https;
+    private String tagline;
+    private int followersCount;
+    private int friendsCount;
     // Getters
 
     public String getName() {
@@ -44,6 +47,18 @@ public class User {
         this.screenName = screenName;
     }
 
+    public String getTagline() {
+        return tagline;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public int getFriendsCount() {
+        return friendsCount;
+    }
+
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
         this.profile_image_url_https = profileImageUrl;
@@ -61,6 +76,10 @@ public class User {
             u.uid = json.getLong("id_str");
             u.screenName = json.getString("screen_name");
             u.profileImageUrl = json.getString("profile_image_url_https");//.replace("_normal","");
+            u.tagline = json.getString("description");
+            u.followersCount = json.getInt("followers_count");
+            u.friendsCount = json.getInt("friends_count");
+
             //Log.d("DEBUG","User "+u.toString());
         } catch (JSONException e) {
             e.printStackTrace();

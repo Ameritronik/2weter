@@ -12,27 +12,37 @@ import org.json.JSONArray;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * Created by hkanekal on 3/30/2017.
+ * Created by hkanekal on 3/31/2017.
  */
 
-public class MentionsTimeLineFragment extends TweetsListFragment {
+public class UserTimeLineFragment extends TweetsListFragment {
     private TwitterClient client;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = com.codepath.apps.tweeter.activities.TwitterApplication.getRestClient();
         //if(com.codepath.apps.tweeter.network.checknetwork.HaveCloud()) {
         populateTimeline(1);
         //}
     }
-
+    // Once this instance is called, the args that are obtained
+    // from the calling activity can now be used anywhere in this fragment
+    public static UserTimeLineFragment newInstance(String screen_name) {
+        // Creates a new fragment given an int and title
+        // UserTimeLineFragment.newInstance("Users screen name here");
+        UserTimeLineFragment userFragment = new UserTimeLineFragment();
+        Bundle args = new Bundle();
+        args.putString("screen_name", screen_name);
+        userFragment.setArguments(args);
+        return userFragment;
+    }
     // Send API request to get the timeline json
     // Fill the list view by creating the tweet objects from json
     @Override
     public void populateTimeline(long uId) {
-        client.setId(uId);
-        client.getMentionsTimeline(new JsonHttpResponseHandler() {
+        String screenName = getArguments().getString("screen_name");
+        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             // Successful
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -40,7 +50,6 @@ public class MentionsTimeLineFragment extends TweetsListFragment {
                 //Log.d("DEBUG",json.toString()); // Got JSON here
                 mAddAll(Tweet.fromJSONArray(json));
             }
-
             // failure
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {

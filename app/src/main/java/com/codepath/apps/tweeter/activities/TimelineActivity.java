@@ -3,6 +3,7 @@ package com.codepath.apps.tweeter.activities;
 //region This section includes all imports
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,11 +31,8 @@ import butterknife.ButterKnife;
 //endregion
 
 public class TimelineActivity extends AppCompatActivity {
-
-
     private TweetsListFragment fragmentTweetsList;
-    private static Toast toast;
-
+    private Toast toast;
     private void showEditDialog() {
         //showToast(getBaseContext(),"You clicked on compose button");
         ComposeTweetFragment composeTweetDialog = new ComposeTweetFragment();
@@ -62,7 +60,7 @@ public class TimelineActivity extends AppCompatActivity {
         tabStrip.setViewPager(vpPager);
     }
 
-    public static void showToast(Context context, String message) {
+    public void showToast(Context context, String message) {
         if (toast != null) { // prevent multi-toasts
             toast.cancel();
             toast = null;
@@ -104,11 +102,6 @@ public class TimelineActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            showToast(getBaseContext(),"You clicked on compose button");
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -119,7 +112,6 @@ public class TimelineActivity extends AppCompatActivity {
         public TweetsPagerAdapter (FragmentManager fm) {
             super(fm);
         }
-
         // Controls the creation and order of the fragments withing the pager
         @Override
         public Fragment getItem(int position) {
@@ -131,7 +123,6 @@ public class TimelineActivity extends AppCompatActivity {
                 return null;
             }
         }
-
         // Will return the Tab title
         @Override
         public CharSequence getPageTitle(int position) {
@@ -144,4 +135,9 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
+    public void onProfileView(MenuItem mi){
+        // Launch the profile view
+        Intent i = new Intent(this,ProfileActivity.class);
+        startActivity(i);
+    }
 }

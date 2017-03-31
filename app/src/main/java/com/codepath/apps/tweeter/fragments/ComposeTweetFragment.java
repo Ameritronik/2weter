@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.codepath.apps.tweeter.R;
-import com.codepath.apps.tweeter.activities.TimelineActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,7 +74,7 @@ public class ComposeTweetFragment extends DialogFragment {
                 if (tweetText != null ) {
                     composeDone.dataBack(tweetText, tweetTo);
                 } else  {
-                    TimelineActivity.showToast(getContext(),"Blank Tweet text -- not posted");
+                    //TimelineActivity.showToast(getContext(),"Blank Tweet text -- not posted");
                 }
                 dismiss();
             }

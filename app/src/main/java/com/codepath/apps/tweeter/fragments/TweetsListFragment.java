@@ -21,12 +21,12 @@ import com.codepath.apps.tweeter.models.User;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TweetsListFragment extends android.support.v4.app.Fragment {
+public abstract class TweetsListFragment extends android.support.v4.app.Fragment {
     ArrayList<Tweet> tweets = new ArrayList<Tweet>();
     ComplexRecyclerAdapter aTweets;
     RecyclerView rvTweets;
     private Tweet myTweet = new Tweet();
-    EndlessRecyclerViewScrollListener mScrollListener;
+    //EndlessRecyclerViewScrollListener mScrollListener;
 
     public void makeMyTweet(String twBody) {
         User iAm = new User();
@@ -84,10 +84,9 @@ public class TweetsListFragment extends android.support.v4.app.Fragment {
         //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(v.getContext());
         //linearLayoutManager.scrollToPosition(0);
         rvTweets.setLayoutManager(linearLayoutManager);
-        rvTweets.setAdapter(aTweets);
         // Retain an instance so that you can call `resetState()` for fresh searches
-        //rvTweets.addOnScrollListener( new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        rvTweets.addOnScrollListener( new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        //mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
@@ -97,10 +96,10 @@ public class TweetsListFragment extends android.support.v4.app.Fragment {
                 //Log.d("DEBUG","LoadMore: page "+page+" Ct: "+totalItemsCount+" uId: "+mUid);
                 loadNextDataFromApi(mUid);
             }
-        };
+        });
 
         // Adds the scroll listener to RecyclerView
-        rvTweets.addOnScrollListener(mScrollListener);
+        rvTweets.setAdapter(aTweets);
         return v;
     }
 
@@ -121,16 +120,19 @@ public class TweetsListFragment extends android.support.v4.app.Fragment {
         int mTweetSize = tweets.size() - 1;
         //rvTweets.notifyItemRangeInserted(mSize, mArticleSize);
         rvTweets.setItemViewCacheSize(mTweetSize); // Should this mbe mSize?
-        //populateTimeline(offset);
+        populateTimeline(offset);
         aTweets.notifyDataSetChanged();
     }
 
     public void mAddAll(ArrayList<Tweet> twets) {
         Log.d("DEBUG","TLFR got twets list count as "+twets.size());
         tweets.addAll(twets);
-        Log.d("DEBUG","TLFR Added to tweets count: "+tweets.size());
+        //Log.d("DEBUG","TLFR Added to tweets count: "+tweets.size());
         aTweets.notifyDataSetChanged();
-        mScrollListener.resetState();
+        //mScrollListener.resetState();
         Log.d("DEBUG", "Done with tweets.addall");
     }
+
+    // Abstract method to be overridden
+    protected abstract void populateTimeline(long maxId);
 }
