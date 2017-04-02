@@ -29,12 +29,13 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void addTweet(Tweet t) {
+        Log.d("DEBUG"," in CRcycler tweet "+t.toString());
         tweets.add(0,t);
     }
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        Log.d("DEBUG","Got item count as "+this.tweets.size());
+        //Log.d("DEBUG","Got item count as "+this.tweets.size());
         return this.tweets.size();
     }
 
@@ -60,7 +61,7 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        Log.d("DEBUG","Got viewType: "+viewType);
+        //Log.d("DEBUG","Got viewType: "+viewType);
         switch (viewType) {
             case NORMAL:
                 View textOnly = inflater.inflate(R.layout.simple_tweet_view,viewGroup, false);
@@ -75,13 +76,13 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 viewHolder = new PhotoTweetViews(mContext, FullView, tweets);
                 break;
         }
-        Log.d("DEBUG","Connecting to viewholder: "+viewHolder.toString());
+        //Log.d("DEBUG","Connecting to viewholder: "+viewHolder.toString());
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        Log.d("DEBUG","Binding to view "+viewHolder.toString()+" At pos "+position);
+        //Log.d("DEBUG","Binding to view "+viewHolder.toString()+" At pos "+position);
         switch (viewHolder.getItemViewType()) {
             case NORMAL:
                 SimpleTweetViews twHolder = (SimpleTweetViews) viewHolder;
@@ -96,35 +97,43 @@ public class ComplexRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 configureSimpleTweetViews(twHolder, position);
                 break;
         }
-        Log.d("DEBUG","DONE Binding to view "+viewHolder.toString()+" At pos "+position);
+        //Log.d("DEBUG","DONE Binding to view "+viewHolder.toString()+" At pos "+position);
 
     }
 
     private void configureSimpleTweetViews(SimpleTweetViews view, int position) {
         final Tweet tweet = tweets.get(position);
         // Set view values
+        String followersCt = String.valueOf(tweet.getUser().getFollowersCount());
+        String friendsCt = String.valueOf(tweet.getUser().getFriendsCount());
         view.setTweetValues(
-                tweet.getUser().getScreenName(),
                 tweet.getUser().getName(),
+                tweet.getUser().getScreenName(),
                 tweet.getBody(),
                 tweet.getCreatedAt(),
-                tweet.gettFavoriteCount(),
+                followersCt,
+                friendsCt,
                 tweet.gettRetweetCount(),
-                tweet.getUser().getProfileImageUrl()
+                tweet.getUser().getProfileImageUrl(),
+                tweet.getUser().getTagline()
                 );
     }
 
     private void configurePhotoTweetViews(PhotoTweetViews view, int position) {
         final Tweet tweet = tweets.get(position);
+        String followersCt = String.valueOf(tweet.getUser().getFollowersCount());
+        String friendsCt = String.valueOf(tweet.getUser().getFriendsCount());
         // Set view values
         view.setTweetValues(
-                tweet.getUser().getScreenName(),
                 tweet.getUser().getName(),
+                tweet.getUser().getScreenName(),
                 tweet.getBody(),
                 tweet.getCreatedAt(),
-                tweet.gettFavoriteCount(),
+                followersCt,
+                friendsCt,
                 tweet.gettRetweetCount(),
                 tweet.getUser().getProfileImageUrl(),
+                tweet.getUser().getTagline(),
                 tweet.gettMediaprofileImageUrl()
         );
     }

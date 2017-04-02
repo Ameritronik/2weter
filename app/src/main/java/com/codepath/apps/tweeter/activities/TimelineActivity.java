@@ -2,9 +2,7 @@ package com.codepath.apps.tweeter.activities;
 
 //region This section includes all imports
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,34 +10,22 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.fragments.ComposeTweetFragment;
 import com.codepath.apps.tweeter.fragments.HomeTimeLineFragment;
 import com.codepath.apps.tweeter.fragments.MentionsTimeLineFragment;
-import com.codepath.apps.tweeter.fragments.TweetsListFragment;
 
 import butterknife.ButterKnife;
 //endregion
 
-public class TimelineActivity extends AppCompatActivity {
-    private TweetsListFragment fragmentTweetsList;
-    private Toast toast;
-    private void showEditDialog() {
-        //showToast(getBaseContext(),"You clicked on compose button");
-        ComposeTweetFragment composeTweetDialog = new ComposeTweetFragment();
-        FragmentManager mFragManager = getSupportFragmentManager();
-        composeTweetDialog.show(mFragManager,"Tweet");
-    }
-
+public class TimelineActivity extends AppCompatActivity
+        implements ComposeTweetFragment.SendTweetListener {
+    TweetsPagerAdapter adapterViewPager = new TweetsPagerAdapter(null);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,40 +39,12 @@ public class TimelineActivity extends AppCompatActivity {
         // Get the viewpager
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         // Set the viewpager adapter for the pager
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapterViewPager);
         // find the sliding tabstrip
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         // Attach the tabstrip to the viewpager
         tabStrip.setViewPager(vpPager);
-    }
-
-    public void showToast(Context context, String message) {
-        if (toast != null) { // prevent multi-toasts
-            toast.cancel();
-            toast = null;
-        }
-        toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-        toast.show();
-    }
-    public void showCustomToast(String message, String color) {
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.custom_toast,
-                (ViewGroup) findViewById(R.id.custom_toast_container));
-        TextView text = (TextView) layout.findViewById(R.id.toastText);
-        text.setText(message);
-        if(color != null) {
-            if (color.equals("BLACK")) {
-                text.setTextColor(Color.BLACK);
-            } else if (color.equals("RED")) {
-                text.setTextColor(Color.RED);
-            } else if (color.equals("BLUE")) {
-                text.setTextColor(Color.BLUE);
-            }
-        } // else defaul toast text color of green
-        Toast toast = new Toast(getBaseContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-        toast.show();
     }
 
     @Override
@@ -105,6 +63,7 @@ public class TimelineActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
         private String tabTitles[] = { "Home", "Mentions"};
@@ -112,7 +71,7 @@ public class TimelineActivity extends AppCompatActivity {
         public TweetsPagerAdapter (FragmentManager fm) {
             super(fm);
         }
-        // Controls the creation and order of the fragments withing the pager
+        // Controls the creation and order of the fragments within the pager
         @Override
         public Fragment getItem(int position) {
             if(position == 0) {
@@ -133,11 +92,41 @@ public class TimelineActivity extends AppCompatActivity {
         public int getCount() {
             return tabTitles.length;
         }
+        public int getItemPosition(Object object) {
+            // this method will be called for every fragment in the ViewPager
+            if (object instanceof MentionsTimeLineFragment) {
+                return POSITION_UNCHANGED; // don't force a reload
+            } else {
+                // POSITION_NONE means something like: this fragment is no longer valid
+                // triggering the ViewPager to re-build the instance of this fragment.
+                return POSITION_NONE;
+            }
+        }
+
     }
 
     public void onProfileView(MenuItem mi){
         // Launch the profile view
         Intent i = new Intent(this,ProfileActivity.class);
         startActivity(i);
+    }
+    public void composeTweet(MenuItem mi){
+        // Launch composer dialog fragment;
+        //Toast.makeText(this,"You clicked on Compose",Toast.LENGTH_SHORT).show();
+        ComposeTweetFragment composeTweetDialog = new ComposeTweetFragment();
+        FragmentManager mFragManager = getSupportFragmentManager();
+        composeTweetDialog.show(mFragManager,"Tweet");
+    }
+
+    @Override
+    public void onFinishEditDialog(String twBody, String twURL) {
+        Log.d("DEBUG"," Time Line Activity Got back twBody "+twBody);
+        Log.d("DEBUG"," Time Line Activity Got back twURL "+twURL);
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fr = adapterViewPager.getItem(0);
+        if( fr instanceof HomeTimeLineFragment) {
+            HomeTimeLineFragment htm = new HomeTimeLineFragment();
+            htm.dataBack(twBody,twURL);
+        }
     }
 }

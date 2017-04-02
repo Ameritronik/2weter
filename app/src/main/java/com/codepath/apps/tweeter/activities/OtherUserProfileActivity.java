@@ -11,43 +11,25 @@ import android.widget.TextView;
 
 import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.fragments.UserTimeLineFragment;
-import com.codepath.apps.tweeter.models.User;
-import com.codepath.apps.tweeter.network.TwitterClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
+public class OtherUserProfileActivity extends AppCompatActivity {
 
-import cz.msebera.android.httpclient.Header;
-
-public class ProfileActivity extends AppCompatActivity {
-    TwitterClient client;
-    User user;
-    String mScreenName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ActionBar actionBar = getSupportActionBar();
-        // Get the screen name from the activity that launches
-        final String screenName = getIntent().getStringExtra("screen_name");
-        // This client can be called anywhere in this fragment
-        client = TwitterApplication.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJSON(response);
-                // my current user account info
-                String profileName=user.getScreenName(); // this name from user data
-                mScreenName = profileName; // use info to pass to profile header
-                getSupportActionBar().setTitle("@"+profileName);
-                populateProfileHeader(user);
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
+        actionBar.setTitle("Bad Title");
+        String screenName = getIntent().getStringExtra("Name");
+        actionBar.setTitle(screenName);
+        String Name = getIntent().getStringExtra("screen_name");
+        String followersCt = getIntent().getStringExtra("followersCt");
+        String friendsCt = getIntent().getStringExtra("friendsCt");
+        String tagLine = getIntent().getStringExtra("tagLine");
+        String ProfileImage = getIntent().getStringExtra("ProfileImageUrl");
+        popProfileHeader(screenName, Name, followersCt,
+                friendsCt, tagLine, ProfileImage);
         // The null check is to make sure that the fragment is started only once
         // ie, if backgrounded, the saved instance will not be null so previous
         // fragment is pulled up
@@ -63,20 +45,20 @@ public class ProfileActivity extends AppCompatActivity {
             ft.commit(); // Starts the transaction, changes the fragment view
         }
     }
-
-    private void populateProfileHeader(User user) {
+    private void popProfileHeader(String screenName, String Name, String followersCt,
+                                        String friendsCt, String tagLine, String ProfileImage) {
         TextView tvScreenName = (TextView) findViewById(R.id.tvScreenName);
         TextView tvRealName = (TextView) findViewById(R.id.tvName);
         TextView tvTagline = (TextView) findViewById(R.id.tvTagLine);
         TextView tvFollowers = (TextView) findViewById(R.id.tvFollowers);
         TextView tvFollowing = (TextView) findViewById(R.id.tvFollowing);
         ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
-        tvScreenName.setText(mScreenName);
-        tvRealName.setText("@"+user.getName());
-        tvTagline.setText(user.getTagline());
-        tvFollowers.setText(user.getFollowersCount()+" Followers");
-        tvFollowing.setText(user.getFriendsCount()+" Following");
-        Picasso.with(this).load(user.getProfileImageUrl()).into(ivProfileImage);
+        tvScreenName.setText(screenName);
+        tvRealName.setText(Name);
+        tvTagline.setText(tagLine);
+        tvFollowers.setText(followersCt+" Followers ");
+        tvFollowing.setText(friendsCt+"  Following");
+        Picasso.with(this).load(ProfileImage).into(ivProfileImage);
     }
 
     @Override

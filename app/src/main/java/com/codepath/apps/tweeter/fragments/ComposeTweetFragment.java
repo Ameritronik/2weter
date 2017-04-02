@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,39 +20,39 @@ import butterknife.ButterKnife;
 public class ComposeTweetFragment extends DialogFragment {
     @Bind(R.id.etTweetTo)     EditText etTweetTo;
     @Bind(R.id.etTweet) EditText etTweet;
+    private String MYTWEETID = "@pjaytumkur";
     private int mTweetWordCountMax = 140;
     private int mTweetWordCountMin = 1;
-    private String MYTWEETID = "@pjaytumkur";
-    TweetToTimeLineListener composeDone;
+    SendTweetListener composeDone;
 
-    public ComposeTweetFragment() {
-        //Empty constructor
+    // Defines the listener interface with a method passing back data result.
+    public interface SendTweetListener {
+        public void onFinishEditDialog(String twBody, String twURL);
     }
-
-    public interface TweetToTimeLineListener {
-        public void dataBack(String twBody, String twURL);
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            composeDone = (TweetToTimeLineListener) context;
+            composeDone = (SendTweetListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement ToolbarListener");
         }
     }
 
+    public ComposeTweetFragment() {
+        //Empty constructor
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_compose_tweet, container, false);
         ButterKnife.bind(this, rootView);
         getDialog().setTitle("Compose Tweet");
         TextInputLayout etTweetWC = (TextInputLayout) rootView.findViewById(R.id.etTweetWC);
         etTweetWC.getEditText().addTextChangedListener(new CharacterCountErrorWatcher(etTweetWC, mTweetWordCountMin, mTweetWordCountMax));
+
         return rootView;
     }
 
@@ -71,8 +72,12 @@ public class ComposeTweetFragment extends DialogFragment {
             public void onClick(View v) {
                 String tweetTo = etTweetTo.getText().toString();
                 String tweetText = etTweet.getText().toString();
+                if(tweetTo == null) {
+                    tweetTo = MYTWEETID;
+                }
+                Log.d("DEBUG"," Tweet2 "+ tweetTo+" TwTxt "+tweetText);
                 if (tweetText != null ) {
-                    composeDone.dataBack(tweetText, tweetTo);
+                    composeDone.onFinishEditDialog(tweetText, tweetTo);
                 } else  {
                     //TimelineActivity.showToast(getContext(),"Blank Tweet text -- not posted");
                 }

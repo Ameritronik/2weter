@@ -1,7 +1,6 @@
 package com.codepath.apps.tweeter.network;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.codepath.oauth.OAuthAsyncHttpClient;
 import com.codepath.oauth.OAuthBaseClient;
@@ -64,8 +63,10 @@ public class TwitterClient extends OAuthBaseClient {
 		long newId = this.id;
 		if (newId < 10) {
 			newId = 1;
+			//Log.d("DEBUG", "Got since id "+newId);
 			params.put("since_id", newId);
 		} else {
+			//Log.d("DEBUG", "Got max id "+newId);
 			params.put("max_id",newId);
 		}
         // Execute request
@@ -104,11 +105,11 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("status", this.myTweet);
         //params.put("screen_name",this.tweetUser_id);
-		String xTweet = "About to Tweet: Text "+this.myTweet+" To: "+this.tweetUser_id;
-		Log.d("DEBUG",xTweet);
+		//String xTweet = "About to Tweet: Text "+this.myTweet+" To: "+this.tweetUser_id;
+		//Log.d("DEBUG",xTweet);
 		// Execute request
         OAuthAsyncHttpClient client = getClient();
-        Log.d("DEBUG",client.toString());
+        //Log.d("DEBUG",client.toString());
         client.post(apiUrl,params,handler);
     }
 

@@ -1,15 +1,19 @@
 package com.codepath.apps.tweeter.viewholders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.tweeter.R;
+import com.codepath.apps.tweeter.activities.OtherUserProfileActivity;
 import com.codepath.apps.tweeter.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +31,7 @@ import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 public class SimpleTweetViews extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     @Bind(R.id.tvRetweetCount) public TextView tvRetweetCount;
-    @Bind(R.id.tvUserName) public TextView tvUserName;
+    @Bind(R.id.tvScreenName) public TextView tvUserName;
     @Bind(R.id.tvName) public TextView tvRealName;
     @Bind(R.id.tvBody) public TextView tvBody;
     @Bind(R.id.tvTimeStamp) public TextView tvRelTime;
@@ -50,18 +54,14 @@ public class SimpleTweetViews extends RecyclerView.ViewHolder implements View.On
         public void onClick(View view) {
 
         }
-        // send the article view back to requester
-        //public TextView getTvArticleText() {
-        //    return tvArticleText;
-        //}
-
-    public void setTweetValues(String ScreenName, String RealName, String Body,
-                               String createdAt, String favoriteCount,
-                               String reTweetCount, String ProfileImageUrl) {
+    public void setTweetValues(final String ScreenName, String RealName, String Body,
+                               String createdAt, final String followersCt, final String friendsCt,
+                               final String reTweetCount, final String ProfileImageUrl,
+                               final String tagLine) {
         tvUserName.setText(ScreenName);
         tvUserName.setTextColor(Color.BLACK);
         tvUserName.setTypeface(null, Typeface.BOLD);
-        String rName = "@"+RealName;
+        final String rName = "@"+RealName;
         tvRealName.setText(rName);
         tvRealName.setTextColor(Color.BLACK);
         tvBody.setText(Body);
@@ -70,12 +70,31 @@ public class SimpleTweetViews extends RecyclerView.ViewHolder implements View.On
         String showReltime = getRelativeTimeAgo(tweetTime);
         tvRelTime.setText(showReltime);
         tvRelTime.setTextColor(Color.BLACK);
-        tvStarCount.setText(favoriteCount);
+        tvStarCount.setText(followersCt);
         this.tvRetweetCount.setText(reTweetCount);
         ivProfileImage.setImageResource((android.R.color.transparent));
         Picasso.with(getContext()).load(ProfileImageUrl)
                 .transform(new RoundedCornersTransformation(3, 3))
                 .into(ivProfileImage);
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view){
+                String msg= "SName: "+ScreenName +" @rName "+rName+" followersCt "+followersCt
+                        + " reTweetCount "+reTweetCount+" tagLine "+tagLine;
+//                Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
+                Log.d("DEBUG", msg);
+                Bundle otherUser = new Bundle();
+                otherUser.putString("screen_name",ScreenName);
+                otherUser.putString("Name",rName);
+                otherUser.putString("followersCt",followersCt);
+                otherUser.putString("friendsCt",friendsCt);
+                otherUser.putString("tagLine",tagLine);
+                otherUser.putString("ProfileImageUrl",ProfileImageUrl);
+                Intent i = new Intent(mContext.getApplicationContext(),OtherUserProfileActivity.class);
+                i.putExtras(otherUser);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(i);
+            }
+        });
     }
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
@@ -101,6 +120,8 @@ public class SimpleTweetViews extends RecyclerView.ViewHolder implements View.On
         relativeDate = relativeDate.replace("minutes ago","m");
         relativeDate = relativeDate.replace("hour ago","h");
         relativeDate = relativeDate.replace("hours ago","h");
+        relativeDate = relativeDate.replace("day ago","d");
+        relativeDate = relativeDate.replace("days ago","d");
 
         return relativeDate;
     }

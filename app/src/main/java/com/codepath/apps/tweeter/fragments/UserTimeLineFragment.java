@@ -11,10 +11,6 @@ import org.json.JSONArray;
 
 import cz.msebera.android.httpclient.Header;
 
-/**
- * Created by hkanekal on 3/31/2017.
- */
-
 public class UserTimeLineFragment extends TweetsListFragment {
     private TwitterClient client;
 
@@ -34,6 +30,7 @@ public class UserTimeLineFragment extends TweetsListFragment {
         UserTimeLineFragment userFragment = new UserTimeLineFragment();
         Bundle args = new Bundle();
         args.putString("screen_name", screen_name);
+        Log.d("DEBUG","UserTimeLineFrag screen_name "+screen_name);
         userFragment.setArguments(args);
         return userFragment;
     }
@@ -42,6 +39,7 @@ public class UserTimeLineFragment extends TweetsListFragment {
     @Override
     public void populateTimeline(long uId) {
         String screenName = getArguments().getString("screen_name");
+        Log.d("DEBUG","UserTimeLineFrag popTimeLine screen_name "+screenName);
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             // Successful
             @Override
@@ -60,5 +58,6 @@ public class UserTimeLineFragment extends TweetsListFragment {
             }
         });
     }
+
 
 }

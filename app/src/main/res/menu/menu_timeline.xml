@@ -8,6 +8,13 @@
         <!--android:title="@string/settings"-->
         <!--app:showAsAction="always" />-->
     <item
+        android:id="@+id/miTweet"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/tweet_compose_small"
+        android:title="Compose"
+        android:onClick="composeTweet"
+        ></item>
+    <item
         android:id="@+id/miProfile"
         app:showAsAction="ifRoom"
         android:icon="@mipmap/ic_profile_large"

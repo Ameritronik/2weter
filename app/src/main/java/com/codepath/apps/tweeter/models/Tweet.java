@@ -105,7 +105,6 @@ public class Tweet {
     private Long tMediaId;
     private String tRetweetCount;
     private String tFavoriteCount;
-
     private String tMediaprofileImageUrl;
 
     public com.codepath.apps.tweeter.models.User getUser() {
@@ -180,7 +179,7 @@ public class Tweet {
         return tFavoriteCount;
     }
 
-    // DeSerialize the JSON and build tweet objs.
+// DeSerialize the JSON and build tweet objs.
     // Tweet.fromJSON ... etc
 
     public static Tweet fromJSON(JSONObject jsonObject) {

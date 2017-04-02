@@ -13,25 +13,35 @@
         android:id="@+id/rlUserHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/abTitle">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/ivProfileImage"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentTop="false"
             android:layout_marginRight="10dp"
+            android:elevation="10dp"
             android:src="@android:drawable/screen_background_light_transparent"
             tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/tvScreenName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ScreenName"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/ivProfileImage" />
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/ivProfileImage"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="17dp"
+            android:layout_toEndOf="@+id/ivProfileImage"
             android:text="@string/name"
             android:textSize="16sp"
             tools:ignore="RtlHardcoded" />
@@ -40,19 +50,19 @@
             android:id="@+id/tvTagLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvName"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/ivProfileImage"
             android:text="@string/tag_line"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_below="@+id/tvName"
+            android:layout_toEndOf="@+id/ivProfileImage" />
     </RelativeLayout>
 
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/llCounts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlUserHeader"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="2dp"
         android:orientation="horizontal">
 
         <TextView
@@ -65,11 +75,24 @@
             android:id="@+id/tvFollowing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvFollowers"
             android:layout_marginLeft="20dp"
+            android:layout_marginStart="47dp"
+            android:layout_toEndOf="@+id/tvFollowers"
             android:text="@string/_5_following"
             tools:ignore="RtlHardcoded" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvFollowers"
+            android:layout_marginTop="2dp"
+            android:background="#cecbcb" />
+    </RelativeLayout>
+
+
 
     <FrameLayout
         android:id="@+id/flContainer"
@@ -81,4 +104,5 @@
         tools:ignore="RtlHardcoded">
 
     </FrameLayout>
+
 </RelativeLayout>
