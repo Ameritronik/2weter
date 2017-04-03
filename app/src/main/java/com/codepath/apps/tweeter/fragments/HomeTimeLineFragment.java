@@ -28,9 +28,9 @@ public class HomeTimeLineFragment extends TweetsListFragment {
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = com.codepath.apps.tweeter.activities.TwitterApplication.getRestClient();
-        //if(com.codepath.apps.tweeter.network.checknetwork.HaveCloud()) {
-        populateTimeline(1);
-        //}
+        if(com.codepath.apps.tweeter.network.checknetwork.isOnline()) {
+            populateTimeline(1);
+        }
     }
 
     // Send API request to get the timeline json
@@ -77,6 +77,8 @@ public class HomeTimeLineFragment extends TweetsListFragment {
         myTweet.settMediaType(null);
         myTweet.settMediaprofileImageUrl("");
         myTweet.settMediaId(Long.valueOf(1));
+        myTweet.settRetweetCount("0");
+        myTweet.settFavoriteCount("0");
     }
     public void dataBack(String twBody, String twURL) {
         //Toast.makeText(this, "Body: " + twBody +" URL: "+twURL, Toast.LENGTH_SHORT).show();
@@ -88,7 +90,7 @@ public class HomeTimeLineFragment extends TweetsListFragment {
         client.postHomeTimeline(new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                //showCustomToast("Tweet successful", "GREEN");
+                showCustomToast("Tweet successful");
                 makeMyTweet(tBody);
                 //Log.d("DEBUG","HomeTimeLineFrag Inserting Tweet: "+myTweet.toString());
                 mAddOneTweet(myTweet);
@@ -98,6 +100,10 @@ public class HomeTimeLineFragment extends TweetsListFragment {
                 //showCustomToast("Tweet unsuccessful","RED");
             }
         });
+    }
+    public static HomeTimeLineFragment newInstance(int i, String mentions) {
+        HomeTimeLineFragment htfm = new HomeTimeLineFragment();
+        return htfm;
     }
 
 }

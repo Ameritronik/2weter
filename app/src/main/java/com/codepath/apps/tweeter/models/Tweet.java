@@ -179,6 +179,13 @@ public class Tweet {
         return tFavoriteCount;
     }
 
+    public void settRetweetCount(String tRetweetCount) {
+        this.tRetweetCount = tRetweetCount;
+    }
+
+    public void settFavoriteCount(String tFavoriteCount) {
+        this.tFavoriteCount = tFavoriteCount;
+    }
 // DeSerialize the JSON and build tweet objs.
     // Tweet.fromJSON ... etc
 

@@ -18,9 +18,9 @@ public class UserTimeLineFragment extends TweetsListFragment {
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = com.codepath.apps.tweeter.activities.TwitterApplication.getRestClient();
-        //if(com.codepath.apps.tweeter.network.checknetwork.HaveCloud()) {
-        populateTimeline(1);
-        //}
+        if(com.codepath.apps.tweeter.network.checknetwork.isOnline()) {
+            populateTimeline(1);
+        }
     }
     // Once this instance is called, the args that are obtained
     // from the calling activity can now be used anywhere in this fragment

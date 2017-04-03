@@ -1,14 +1,17 @@
 package com.codepath.apps.tweeter.fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.activities.EndlessRecyclerViewScrollListener;
@@ -61,30 +64,34 @@ public abstract class TweetsListFragment extends android.support.v4.app.Fragment
     }
 
     public void loadNextDataFromApi(Long offset) {
-        //firstTweetAccess = false;
-        //showCustomToast("Getting more tweets...", "BLUE");
-        //showToast(getBaseContext(),"Getting more tweets");
+        showCustomToast("Fetching.....");
         int mTweetSize = tweets.size() - 1;
-        //rvTweets.notifyItemRangeInserted(mSize, mArticleSize);
-        rvTweets.setItemViewCacheSize(mTweetSize); // Should this mbe mSize?
+        rvTweets.setItemViewCacheSize(mTweetSize);
         populateTimeline(offset);
         aTweets.notifyDataSetChanged();
     }
 
     public void mAddAll(ArrayList<Tweet> twets) {
-        Log.d("DEBUG","TLFR got twets list count as "+twets.size());
         tweets.addAll(twets);
-        //Log.d("DEBUG","TLFR Added to tweets count: "+tweets.size());
         aTweets.notifyDataSetChanged();
-        //mScrollListener.resetState();
-        Log.d("DEBUG", "Done with tweets.addall");
     }
     public void mAddOneTweet(Tweet mitweet) {
-        Log.d("DEBUG","in TweetLFrag, got miTweet "+ mitweet.toString());
         aTweets.addTweet(mitweet);
         aTweets.notifyDataSetChanged();
-        Log.d("DEBUG", "Added One Tweet on top of list");
     }
     // Abstract method to be overridden
     protected abstract void populateTimeline(long maxId);
+    public void showCustomToast(String message) {
+        Toast toast= Toast.makeText(getContext(), message,Toast.LENGTH_SHORT);
+        View toastView = toast.getView();
+        toastView.setBackgroundResource(R.drawable.tags_rounded_corners);
+        toastView.setBackgroundColor(Color.rgb(43,155,247));
+        TextView textView = (TextView) toastView.findViewById(android.R.id.message);
+        textView.setShadowLayer(0,0,0, Color.TRANSPARENT);
+        textView.setTextColor(Color.WHITE);
+        toast.setView(toastView);
+        toast.setGravity(Gravity.TOP, 50, 600);
+        toast.show();
+    }
+
 }

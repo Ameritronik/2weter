@@ -22,9 +22,9 @@ public class MentionsTimeLineFragment extends TweetsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = com.codepath.apps.tweeter.activities.TwitterApplication.getRestClient();
-        //if(com.codepath.apps.tweeter.network.checknetwork.HaveCloud()) {
-        populateTimeline(1);
-        //}
+        if(com.codepath.apps.tweeter.network.checknetwork.isOnline()) {
+            populateTimeline(1);
+        }
     }
 
     // Send API request to get the timeline json
@@ -51,5 +51,8 @@ public class MentionsTimeLineFragment extends TweetsListFragment {
             }
         });
     }
-
+    public static MentionsTimeLineFragment newInstance(int i, String mentions) {
+        MentionsTimeLineFragment mtfm = new MentionsTimeLineFragment();
+        return mtfm;
+    }
 }

@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!--<item-->
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <!--<item-->
         <!--android:id="@+id/action_settings"-->
         <!--android:icon="@drawable/mytwitimage"-->
         <!--android:orderInCategory="2"-->
         <!--android:title="@string/settings"-->
         <!--app:showAsAction="always" />-->
-    <item
-        android:id="@+id/miTweet"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/tweet_compose_small"
-        android:title="Compose"
-        android:onClick="composeTweet"
-        ></item>
-    <item
-        android:id="@+id/miProfile"
-        app:showAsAction="ifRoom"
-        android:icon="@mipmap/ic_profile_large"
-        android:title="Profile"
-        android:onClick="onProfileView"
-        ></item>
+        <item
+            android:id="@+id/miTweet"
+            app:showAsAction="always"
+            android:icon="@drawable/tweet_compose_small"
+            android:orderInCategory="2"
+            android:onClick="composeTweet"
+            ></item>
+        <item
+            android:id="@+id/miProfile"
+            app:showAsAction="always"
+            android:orderInCategory="2"
+            android:icon="@mipmap/ic_profile_large"
+            android:onClick="onProfileView"
+            ></item>
+        <item
+            android:id="@+id/miSearch"
+            app:showAsAction="ifRoom"
+            android:orderInCategory="4"
+            android:icon="@mipmap/ic_search"
+            android:onClick="onSearch"
+            ></item>
+        <item
+            android:id="@+id/miDirMsg"
+            app:showAsAction="always"
+            android:orderInCategory="1"
+            android:icon="@mipmap/ic_dirmsg"
+            android:onClick="onSendDirectMessage"
+            ></item>
+        <item
+            android:id="@+id/miActionProgress"
+            android:title="Loading..."
+            android:visible="false"
+            android:orderInCategory="100"
+            app:showAsAction="always"
+            app:actionLayout="@layout/action_view_progress" />
 </menu>

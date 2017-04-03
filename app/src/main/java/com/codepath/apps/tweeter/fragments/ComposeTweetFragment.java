@@ -1,15 +1,18 @@
 package com.codepath.apps.tweeter.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.tweeter.R;
 
@@ -64,6 +67,7 @@ public class ComposeTweetFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getContext(), "Cancel????", Toast.LENGTH_SHORT).show();
+                showDialogToast("Tweet Cancelled");
                 dismiss();
             }
         });
@@ -75,14 +79,26 @@ public class ComposeTweetFragment extends DialogFragment {
                 if(tweetTo == null) {
                     tweetTo = MYTWEETID;
                 }
-                Log.d("DEBUG"," Tweet2 "+ tweetTo+" TwTxt "+tweetText);
                 if (tweetText != null ) {
                     composeDone.onFinishEditDialog(tweetText, tweetTo);
                 } else  {
-                    //TimelineActivity.showToast(getContext(),"Blank Tweet text -- not posted");
+                    showDialogToast("No Tweet: Empty message");
                 }
                 dismiss();
             }
         });
      }
+
+     public void showDialogToast(String message) {
+        Toast toast= Toast.makeText(getContext(), message,Toast.LENGTH_SHORT);
+        View toastView = toast.getView();
+        toastView.setBackgroundResource(R.drawable.tags_rounded_corners);
+        toastView.setBackgroundColor(Color.rgb(43,155,247));
+        TextView textView = (TextView) toastView.findViewById(android.R.id.message);
+        textView.setShadowLayer(0,0,0, Color.TRANSPARENT);
+        textView.setTextColor(Color.WHITE);
+        toast.setView(toastView);
+        toast.setGravity(Gravity.TOP, 50, 600);
+        toast.show();
+    }
 }
